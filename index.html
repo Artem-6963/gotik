@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Артем Тымченко — Альбом</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #e10600;
+    --red-soft: #ff2a2a;
+    --red-glow: rgba(225, 6, 0, 0.55);
+    --dark: #0a0505;
+    --dark-2: #140808;
+    --dark-3: #1c0a0a;
+    --text: #f3e9e9;
+    --text-dim: #b89a9a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  /* ГРАДИЕНТНЫЙ ФОН — красно-алый / чёрный / тёмный */
+  body {
+    background:
+      linear-gradient(135deg,
+        #050202 0%,
+        #1a0505 22%,
+        #4a0808 45%,
+        #8a0a0a 62%,
+        #e10600 80%,
+        #2a0606 100%);
+    background-attachment: fixed;
+    background-size: 200% 200%;
+    animation: gradientFlow 18s ease infinite;
+    color: var(--text);
+    font-family: 'Oswald', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  @keyframes gradientFlow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Тёмная вуаль поверх градиента, чтобы текст читался */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(5,2,2,0.35) 0%, rgba(5,2,2,0.85) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Плавающие частицы */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,80,80,0.55), transparent),
+      radial-gradient(1px 1px at 70% 60%, rgba(255,120,120,0.6), transparent),
+      radial-gradient(2px 2px at 40% 80%, rgba(225,6,0,0.45), transparent),
+      radial-gradient(1px 1px at 85% 20%, rgba(255,42,42,0.5), transparent),
+      radial-gradient(1px 1px at 10% 70%, rgba(225,6,0,0.4), transparent);
+    background-size: 100% 100%;
+    animation: driftParticles 18s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes driftParticles {
+    0%   { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-25px) scale(1.05); opacity: 1; }
+  }
+
+  /* Боковая навигация */
+  .nav-rail {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 10px 18px 14px;
+    background: linear-gradient(180deg, rgba(20,8,8,0.85), rgba(10,5,5,0.85));
+    border-right: 1px solid rgba(225,6,0,0.35);
+    border-radius: 0 18px 18px 0;
+    backdrop-filter: blur(6px);
+  }
+
+  .nav-rail a {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 20px;
+    border: 1px solid rgba(225,6,0,0.25);
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    background: rgba(225,6,0,0.04);
+  }
+
+  .nav-rail a::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 56px;
+    white-space: nowrap;
+    background: var(--dark-3);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateX(-8px);
+    pointer-events: none;
+    transition: all 0.35s ease;
+    border: 1px solid rgba(225,6,0,0.4);
+  }
+
+  .nav-rail a:hover::after { opacity: 1; transform: translateX(0); }
+
+  .nav-rail a:hover {
+    color: #fff;
+    border-color: var(--red);
+    box-shadow: 0 0 18px var(--red-glow);
+    transform: scale(1.1);
+    background: rgba(225,6,0,0.15);
+  }
+
+  /* Обложка */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1.2s ease both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero .cover-frame {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--red);
+    box-shadow: 0 0 45px var(--red-glow), inset 0 0 30px rgba(0,0,0,0.6);
+    margin-bottom: 28px;
+    animation: pulseGlow 3.5s ease-in-out infinite;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero .cover-frame:hover { transform: scale(1.06) rotate(2deg); }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 35px var(--red-glow), inset 0 0 30px rgba(0,0,0,0.6); }
+    50%      { box-shadow: 0 0 65px var(--red-glow), inset 0 0 30px rgba(0,0,0,0.6); }
+  }
+
+  .hero .cover-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .hero .cover-frame:hover img { transform: scale(1.12); }
+
+  .hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 46px);
+    color: var(--text);
+    letter-spacing: 3px;
+    font-weight: 800;
+    text-shadow: 0 0 22px rgba(225,6,0,0.5);
+    animation: slideUp 1s 0.2s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(46px, 9vw, 90px);
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px var(--red-glow), 0 0 60px rgba(225,6,0,0.35);
+    margin-top: 6px;
+    animation: slideUp 1s 0.35s ease both;
+  }
+
+  .hero .subtitle {
+    color: var(--text-dim);
+    font-size: clamp(14px, 2vw, 18px);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    animation: slideUp 1s 0.5s ease both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-dim);
+    font-size: 13px;
+    letter-spacing: 3px;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+    50%      { transform: translateX(-50%) translateY(10px); opacity: 1; }
+  }
+
+  /* Страницы альбома */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 70px 28px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .page.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 5vw, 48px);
+    color: var(--red-soft);
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 3px;
+    font-weight: 800;
+    text-shadow: 0 0 20px var(--red-glow), 0 2px 10px rgba(0,0,0,0.8);
+  }
+
+  .page-sub {
+    text-align: center;
+    color: var(--text);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-bottom: 40px;
+    display: block;
+    opacity: 0.85;
+  }
+
+  .page-sub::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red-soft), transparent);
+    margin: 14px auto 0;
+  }
+
+  /* Карточки */
+  .card {
+    background: linear-gradient(145deg, rgba(20,6,6,0.92), rgba(8,3,3,0.96));
+    border: 1px solid rgba(225,6,0,0.3);
+    border-radius: 18px;
+    padding: 28px 30px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(225,6,0,0.12), transparent);
+    transition: left 0.8s ease;
+  }
+
+  .card:hover::before { left: 100%; }
+
+  .card:hover {
+    border-color: var(--red);
+    transform: translateY(-6px);
+    box-shadow: 0 14px 40px rgba(225,6,0,0.35), 0 0 30px rgba(225,6,0,0.2);
+  }
+
+  .card p {
+    color: var(--text);
+    font-size: 17px;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+  }
+
+  .card p + p { margin-top: 14px; }
+
+  .card strong {
+    color: var(--red-soft);
+    font-weight: 600;
+  }
+
+  /* Галерея */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 18px;
+    margin: 30px 0;
+  }
+
+  .gallery img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2px solid rgba(225,6,0,0.35);
+    filter: grayscale(30%) contrast(1.1);
+    transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    cursor: pointer;
+  }
+
+  .gallery img:hover {
+    filter: grayscale(0%) contrast(1.15) brightness(1.1);
+    transform: scale(1.06) rotate(-1deg);
+    border-color: var(--red);
+    box-shadow: 0 10px 35px var(--red-glow);
+    z-index: 5;
+  }
+
+  /* Списки */
+  .styled-list {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+
+  .styled-list li {
+    background: linear-gradient(145deg, rgba(20,6,6,0.9), rgba(8,3,3,0.94));
+    border: 1px solid rgba(225,6,0,0.3);
+    border-left: 4px solid var(--red);
+    padding: 16px 20px;
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.4px;
+    transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    cursor: default;
+    backdrop-filter: blur(4px);
+  }
+
+  .styled-list li::before {
+    content: '▸';
+    color: var(--red-soft);
+    margin-right: 12px;
+    font-weight: 700;
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .styled-list li:hover {
+    transform: translateX(10px);
+    border-left-color: var(--red-soft);
+    background: linear-gradient(145deg, rgba(45,15,15,0.96), rgba(25,8,8,0.96));
+    box-shadow: 0 8px 28px rgba(225,6,0,0.3);
+  }
+
+  .styled-list li:hover::before { transform: translateX(4px) scale(1.2); }
+
+  /* Кнопки */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--red-soft);
+    border: 2px solid var(--red);
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    margin: 8px;
+    z-index: 1;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: -1;
+  }
+
+  .btn:hover::before { transform: scaleX(1); }
+
+  .btn:hover {
+    color: #fff;
+    box-shadow: 0 0 30px var(--red-glow);
+    transform: translateY(-3px);
+  }
+
+  .btn-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  /* Работы — фото и видео */
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    margin-top: 20px;
+  }
+
+  .work-item {
+    background: linear-gradient(145deg, rgba(20,6,6,0.92), rgba(8,3,3,0.96));
+    border: 1px solid rgba(225,6,0,0.3);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .work-item:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: var(--red);
+    box-shadow: 0 18px 45px rgba(225,6,0,0.4), 0 0 25px rgba(225,6,0,0.25);
+  }
+
+  .work-item img,
+  .work-item video {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(225,6,0,0.25);
+    transition: transform 0.6s ease;
+  }
+
+  .work-item:hover img,
+  .work-item:hover video {
+    transform: scale(1.03);
+  }
+
+  .work-caption {
+    padding: 16px 18px;
+    color: var(--text);
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    font-weight: 300;
+  }
+
+  .work-caption strong {
+    color: var(--red-soft);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  /* Контакты */
+  .contact-info {
+    text-align: center;
+    margin-top: 28px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .contact-info p {
+    color: var(--text-dim);
+    font-size: 15px;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+  }
+
+  .contact-info p:hover { color: var(--red-soft); }
+
+  .contact-info span {
+    color: var(--text);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+  }
+
+  /* Футер */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(225,6,0,0.35);
+    margin-top: 40px;
+    position: relative;
+    z-index: 1;
+    background: rgba(5,2,2,0.55);
+    backdrop-filter: blur(6px);
+  }
+
+  footer::before {
+    content: '★';
+    display: block;
+    color: var(--red-soft);
+    font-size: 20px;
+    margin-bottom: 12px;
+    animation: spinSlow 8s linear infinite;
+  }
+
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Адаптив */
+  @media (max-width: 700px) {
+    .nav-rail {
+      left: 50%;
+      top: auto;
+      bottom: 0;
+      transform: translateX(-50%);
+      flex-direction: row;
+      border-radius: 18px 18px 0 0;
+      border-right: none;
+      border-top: 1px solid rgba(225,6,0,0.35);
+      padding: 10px 14px;
+      width: auto;
+    }
+    .nav-rail a::after { display: none; }
+    .page { padding: 50px 18px 90px; }
+    .card { padding: 22px 20px; }
+    .gallery img { height: 120px; }
+    .works-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Навигация -->
+  <nav class="nav-rail">
+    <a href="#about" data-label="О себе">♠</a>
+    <a href="#music" data-label="Музыка">♪</a>
+    <a href="#skills" data-label="Навыки">⚙</a>
+    <a href="#hobbies" data-label="Увлечения">★</a>
+    <a href="#works" data-label="Работы">✦</a>
+    <a href="#contact" data-label="Связь">✉</a>
+  </nav>
+
+  <!-- Обложка -->
+  <header class="hero">
+    <div class="cover-frame">
+      <img src="me.jpg" alt="Артем Тымченко">
+    </div>
+    <h2>Тымченко А.С.</h2>
+    <h1>Мой сайт-альбом</h1>
+    <span class="subtitle">Личный альбом · 2026</span>
+    <div class="scroll-hint">▼ ЛИСТАЙ ▼</div>
+  </header>
+
+  <!-- О себе -->
+  <section class="page" id="about">
+    <h2 class="page-title">О себе</h2>
+
+    <div class="card">
+      <p><strong>Меня зовут Артем</strong>, я начинающий разработчик веб-сайтов. Сейчас веду разработку этого сайта. При себе имею небольшие навыки в этой разработке — если что-то криво, то я пока учусь, не судите строго.</p>
+    </div>
+
+    <div class="card">
+      <p>Сам я люблю проводить время в общении, а также слушать музыку. Я больше по русскому року. Любимые группы: <strong>Король и Шут, Сектор Газа, Егор Летов (Гражданская Оборона), Кино, Княzz, Наутилус, Агата Кристи, Ария.</strong></p>
+    </div>
+
+    <div class="card">
+      <p>Я обладаю интересным философским мышлением — могу думать о чём-то так долго, что это заходит за все рамки масштаба. Примеров немало: можно задуматься о еде, а в конечном итоге дойти до мысли, как её добыли, приготовили или нашли. Частая тема размышлений — <strong>Анархия и свобода, смысл русского рока и проблема нынешних субкультур</strong>.</p>
+    </div>
+
+    <div class="card">
+      <p>Моё любимое дело — это общение. Не знаю, может, это у меня от природы, но в общении преуспел. Язык мой — и друг, и враг. Ошибался, общался не с теми людьми, натыкался на придурков и психов. Но появился огромный опыт, который я применяю каждый день.</p>
+    </div>
+
+    <div class="card">
+      <p>Что сказать о моей религии: я не верю в бога. Конечно, знаю, что есть что-то на небесах или в каком-то пространстве. Есть только фраза: <strong>«Бог есть, но не для меня»</strong>.</p>
+    </div>
+  </section>
+
+  <!-- Музыка -->
+  <section class="page" id="music">
+    <h2 class="page-title">Музыка</h2>
+
+    <div class="gallery">
+      <img src="https://avatars.mds.yandex.net/i?id=eed659b93a4ea890a582f633b3b73c0db5d3a531-16707080-images-thumbs&n=13" alt="Король и Шут">
+      <img src="https://avatars.mds.yandex.net/i?id=6caf684df3cf7b72b0ced8e80e41ebaaf19535e9-10868638-images-thumbs&n=13" alt="Кино">
+      <img src="https://avatars.mds.yandex.net/i?id=ce7bcdd3ae821009b96f604b53166788c2e96f3c-4576087-images-thumbs&n=13" alt="Сектор Газа">
+      <img src="https://avatars.mds.yandex.net/i?id=cdff33275587a02c4a3a0ba829606aaf72302364-5502412-images-thumbs&n=13" alt="Гражданская Оборона">
+    </div>
+
+    <div class="card">
+      <p>Русский рок — это не просто музыка. Это философия, это жизнь, это голос поколений. Каждая песня — отдельная история, которую хочется слушать снова и снова.</p>
+    </div>
+  </section>
+
+  <!-- Навыки -->
+  <section class="page" id="skills">
+    <h2 class="page-title">Мои навыки</h2>
+
+    <ul class="styled-list">
+      <li>Начинающая разработка веб-сайтов</li>
+      <li>Разумное использование искусственного интеллекта</li>
+      <li>Решаемость проблем при разговоре или в разговоре</li>
+      <li>Хорошее умение рассказывать и объяснять любую тему</li>
+    </ul>
+  </section>
+
+  <!-- Увлечения -->
+  <section class="page" id="hobbies">
+    <h2 class="page-title">Мои увлечения</h2>
+
+    <ul class="styled-list">
+      <li>Создавать интересные изображения</li>
+      <li>Слушать музыку (рок, панк-рок, хоррор-панк)</li>
+      <li>Общаться по интернету</li>
+      <li>Тренироваться</li>
+      <li>Размышлять о великом, о важном (философия Анархии)</li>
+    </ul>
+
+    <div class="card" style="margin-top: 30px;">
+      <img src="https://avatars.mds.yandex.net/i?id=461423d3f8630da5bdfe5ad4bd3c91614cc40ab9-16425995-images-thumbs&n=13" alt="Анархия" style="width: 100%; max-height: 260px; object-fit: cover; border-radius: 14px; margin-bottom: 20px; border: 2px solid rgba(225,6,0,0.35);">
+      <p>Моя личная идеология — <strong>«Анархизм»</strong>. Я за свободу слова, свободу личности, свободу идей. Конечно, анархисты прошлого века были очень активные, создавали свои государства, устраивали мятежи и вооружённые перевороты. Сейчас время другое. Любой чувак может нацепить на себя шипы, кожанки, берцы, ирокез и ходить слушать панк-рок, считая себя анархо-панком. Конечно, это ошибка в названии — кто он. Надо понимать саму суть идеологии, понять, к чему надо стремиться, за что держаться, к чему приходить, какая цель.</p>
+    </div>
+
+    <div class="card">
+      <p>Напоследок хочу сказать: тот, кто это читает, знайте — в жизни многое случается. Не давайте никому затмить ваше солнце, потому что не они решают, как устроена ваша жизнь. Как говорил Барон Мюнхаузен: <strong>«Все глупости делаются с умным лицом»</strong>. «Улыбайтесь!» «Решайтесь на многое и будьте уверены!»</p>
+    </div>
+
+    <div class="btn-wrap">
+      <a href="https://www.youtube.com/shorts/DM9bjkUr0kc" target="_blank" class="btn">▶ Горшок про анархизм</a>
+    </div>
+  </section>
+
+  <!-- НОВАЯ СТРАНИЦА: РАБОТЫ (фото + видео) -->
+  <section class="page" id="works">
+    <h2 class="page-title">Мои работы</h2>
+
+    <div class="works-grid">
+
+      <!-- Фото-работа -->
+      <div class="work-item">
+        <img src="me.jpg" alt="Моя фотография">
+        <div class="work-caption">
+          <strong>Портрет</strong>
+          Личное фото — образ для обложки альбома.
+        </div>
+      </div>
+
+      <!-- Видео-работа 1 -->
+      <div class="work-item">
+        <video controls preload="metadata" poster="me.jpg">
+          <source src="video-1.mp4" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+        <div class="work-caption">
+          <strong>Проект №1</strong>
+          Съемка в 3 планах, монтаж и цветокоррекция.
+        </div>
+      </div>
+
+      <!-- Видео-работа 2 -->
+      <div class="work-item">
+        <video controls preload="metadata" poster="me.jpg">
+          <source src="video-2.mp4" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+        <div class="work-caption">
+          <strong>Проект №2</strong>
+          Как создать свой первый сайт в HTML и CSS. Пошаговое руководство.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top: 30px;">
+      <p>Здесь собраны мои работы: фотографии и видео, которые я создавал в процессе обучения и творчества. Если вам интересно — пишите, обсудим идеи и проекты.</p>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section class="page" id="contact">
+    <h2 class="page-title">Связь со мной</h2>
+
+    <div class="btn-wrap">
+      <a href="https://wa.me/qr/TD2HPFKUWGU7F1" target="_blank" class="btn">✆ WhatsApp</a>
+      <a href="https://www.instagram.com/hadsker_shut08?utm_source=qr&igsh=MXAycnF3MGQydjRmMA==" target="_blank" class="btn">◎ Instagram</a>
+    </div>
+
+    
+  </section>
+
+  <footer>Создано студентом 2(ныне 3 курса) курса Тымченко А.С.</footer>
+
+  <script>
+    // Плавное появление секций
+    const pages = document.querySelectorAll('.page, .reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    pages.forEach(page => observer.observe(page));
+
+    // Плавный скролл
+    document.querySelectorAll('.nav-rail a, .btn[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href');
+        if (targetId.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+
+    // Лёгкий параллакс фона
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          document.body.style.backgroundPosition = `${scrollY * 0.05}px ${scrollY * 0.15}px`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
+
+</body>
+</html>
